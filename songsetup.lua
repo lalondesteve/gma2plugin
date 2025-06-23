@@ -1,11 +1,11 @@
 require("gma_api")
 
-local common = require("common")
+local common = require("modules/commons")
 local uservars = common.uservars
 local cmd = common.cmd
 local validate_input = common.validate_input
 
-local view = require("view_items")
+local view = require("modules/view_items")
 
 --[[
 ==============================================================================
@@ -69,7 +69,7 @@ local function create_pool_items(
 			break
 		end
 		-- cmd("store view %d /screen=%d", { i, uservars.view_screen })
-		-- cmd('assign view %d /name="%s"', { i, song })
+		--cmd('assign view %d /name="%s"', { i, song })
 		j = j + 1
 	end
 	return nil
