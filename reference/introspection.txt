@@ -1,77 +1,87 @@
 gma table
-  cmd function
+  sleep function
+  echo function
+  feedback function
+  timer function
+
+  build_date function
   build_time function
-  gethardwaretype function
+  git_version function
+
+  export function
   export_csv function
+  export_json function
   import function
+
+  cmd function
+  gethardwaretype function
+  gettime function
+  textinput function
+
+  draw table
+    getperformance function
+
   show table
     getdmx function
+    getobj table
+      amount function
+      child function
+      class function
+      compare function
+      handle function
+      index function
+      label function
+      name function
+      number function
+      parent function
+      verify function
     getvar function
-    setvar function
     property table
       name function
       amount function
       get function
-    getobj table
-      child function
-      name function
-      label function
-      amount function
-      handle function
-      index function
-      class function
-      compare function
-      number function
-      parent function
-      verify function
-  sleep function
+    setvar function
+      
   gui table
     confirm function
     msgbox function
     progress table
-      setrange function
-      start function
-      settext function
       set function
+      setrange function
+      settext function
+      start function
       stop function
-  echo function
-  build_date function
+
   network table
-    getsessionname function
-    getprimaryip function
-    getperformance function
-    getmanetslot function
-    getslot function
     gethostdata function
-    gethosttype function
     gethostsubtype function
-    getsessionnumber function
+    gethosttype function
+    getmanetslot function
+    getperformance function
+    getprimaryip function
     getsecondaryip function
+    getsessionname function
+    getsessionnumber function
+    getslot function
     getstatus function
-  export function
-  timer function
-  feedback function
+
   user table
     getcmddest function
     getselectedexec function
     setvar function
     getvar function
-  gettime function
+
   timestamp table
     name function
     amount function
     time function
-  textinput function
-  export_json function
-  git_version function
-  draw table
-    getperformance function
+
   canbus table
-    wheel function
-    fader function
-    hardkey function
     ball function
     encoder function
+    fader function
+    hardkey function
+    wheel function
     data table
       hardkeys table
         X2 number

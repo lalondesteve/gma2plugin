@@ -4,90 +4,243 @@
 -- based off the work of Nick N. Zinovenko
 -- https://github.com/exscriber/Ma2-API/raw/refs/heads/master/gma_api.lua
 --
+-- And the gma api_test.lua found in the plugin subfolder
+--
+-- Improved by introspection of the gma table
+--
 
 ---@alias prompt fun(title: string, message:string): boolean
 ---@alias handle integer
+---@alias export_data table
+---@alias import_data table
 
 ---@class gma
 ---@field sleep fun(seconds: number)
 ---@field echo fun(message: string)
 ---@field feedback fun(message: string)
----@field cmd fun(command: string): string?
+---
 ---@field build_date fun(): string
 ---@field build_time fun(): string
 ---@field git_version fun(): string
+---
+---@field export fun(filename: string, data: export_data)
+---@field export_csv fun(filename: string, data: export_data)
+---@field export_json fun(filename: string, data: export_data)
+---@field import fun(filename: string, subfolder?: string): import_data
+---
+---@field canbus Canbus
+---
+---@field cmd fun(command: string): string?
 ---@field gethardwaretype fun(): string
----@field export fun(filename: string, data: table)
----@field export_csv fun(filename: string, data: table)
----@field export_json fun(filename: string, data: table)
----@field import fun(filename: string, subfolder?: string): table
----@field timer fun(callback: function, timeout: number, max_count: number, cleanup: function)
 ---@field gettime fun(): number
+---@field gui Gui
+---@field network Network
+---@field show Show
 ---@field textinput fun(title: string, placeholder?: string): string
----@field gui gui
----@field show show
----@field network network
----@field canbus canbus
----@field user user
+---@field timer fun(callback: function, timeout: number, max_count: number, cleanup: function)
+---@field timestamp Timestamp
+---@field user User
 
----@class progress
----@field start fun(name:string): handle
----@field stop fun(handle: handle)
----@field settext fun(handle: handle, text: string)
----@field setrange fun(handle: handle, from: number, to: number)
----@field set fun(handle:handle, value:number)
-
----@class gui
+---@class Gui
 ---@field confirm prompt
 ---@field msgbox prompt
----@field progress progress
+---@field progress Progress
 
----@class getobj
----@field handle fun(identifier: string | handle): handle
----@field class fun(handle: handle) : string
----@field index fun(handle: handle) : number
----@field name fun(handle: handle) : string
----@field label fun(handle: handle) : string | nil
----@field number fun(handle: handle) : number   comandline number
+---@class Progress
+---@field set fun(handle:handle, value:number)
+---@field setrange fun(handle: handle, from: number, to: number)
+---@field settext fun(handle: handle, text: string)
+---@field start fun(name:string): handle
+---@field stop fun(handle: handle)
+
+---@class Getobj
 ---@field amount fun(handle: handle) : number   amount of children
 ---@field child fun(handle: handle) : handle
+---@field class fun(handle: handle) : string
+---@field compare fun(handle1: handle, handle2:handle) : boolean
+---@field handle fun(identifier: string | handle): handle
+---@field index fun(handle: handle) : number
+---@field label fun(handle: handle) : string | nil
+---@field name fun(handle: handle) : string
+---@field number fun(handle: handle) : number   comandline number
 ---@field parent fun(handle: handle) : handle
 ---@field verify fun(handle: handle) : handle
----@field compare fun(handle1: handle, handle2:handle) : boolean
 
----@class user
+---@class User
 ---@field getcmddest fun(): handle
 ---@field getselectedexec fun(): handle
 ---@field getvar fun(var_name: string): string
 ---@field setvar fun(var_name: string, value: string): nil
 
----@class  property
+---@class Property
 ---@field amount fun(handle:handle): integer
----@field name fun(handle: handle, index: integer): string
 ---@field get fun(handle: handle, index: integer): string
+---@field name fun(handle: handle, index: integer): string
 
----@class show
----@field getobj getobj
----@field property property
+---@class Show
 ---@field getdmx fun(recycle?: table, dmx_addr:number, amount?:number)
----@field getvar fun(var_name: string): string
----@field setvar fun(var_name: string, value: string): nil
+---@field getobj getobj
+---@field getvar fun(var_name: string): string get global variable
+---@field property property
+---@field setvar fun(var_name: string, value: string): nil set global variable
 
----@class network
----@field gethosttype fun(): string
----@field gethostsubtype fun(): string
----@field getprimaryip fun(): string
----@field getsecondaryip fun(): string
----@field getstatus fun(): string
----@field getsessionnumber fun(): number
----@field getsessionname fun(): string
----@field getslot fun(): number
+---@class Network
 ---@field gethostdata fun(ip:string, recycle?: table) : table
+---@field gethostsubtype fun(): string
+---@field gethosttype fun(): string
 ---@field getmanetslot fun(slot: number, recycle?: table) : table
 ---@field getperformance fun(slot: number, recycle?: table): table
+---@field getprimaryip fun(): string
+---@field getsecondaryip fun(): string
+---@field getsessionname fun(): string
+---@field getsessionnumber fun(): number
+---@field getslot fun(): number
+---@field getstatus fun(): string
 
----@class canbus
----@field hardkey fun(keycode: number, pressed: boolean, hold: boolean): boolean
----@field encoder fun(encoder: number, steps: number, pressed: boolean): boolean
----@field wheel fun(steps: number): boolean
+---@class Timestamp
+---@field name fun()
+---@field amount fun()
+---@field time fun()
+
+---@class Canbus
 ---@field ball fun(x_axis: number, y_axis: number ): boolean
+---@field encoder fun(encoder: number, steps: number, pressed: boolean): boolean
+---@field fader fun()
+---@field hardkey fun(keycode: number, pressed: boolean, hold: boolean): boolean
+---@field wheel fun(steps: number): boolean
+---@field data CanbusData
+
+---@class CanbusData
+---@field hardkeys HardKeysTable
+
+---@class HardKeysTable
+---@field X2 number
+---@field PAGE_CHANNEL_DOWN number
+---@field V2 number
+---@field PRESET number
+---@field EXECUTOR2 number
+---@field GOP_FAST number
+---@field PAGE_BUTTON_DOWN number
+---@field BLIND number
+---@field TIME number
+---@field ENCODER number
+---@field EXECUTOR number
+---@field PAGE_CHANNEL_UP number
+---@field DEF_GO_PLUS number
+---@field GO_MINUS number
+---@field GROUP number
+---@field U1 number
+---@field V1 number
+---@field GOM_FAST number
+---@field STORE number
+---@field X9 number
+---@field X19 number
+---@field UP number
+---@field SOLO number
+---@field PAGE_BUTTON_UP number
+---@field DEF_PAUSE number
+---@field X17 number
+---@field X13 number
+---@field V4 number
+---@field U4 number
+---@field SEQU number
+---@field OFF number
+---@field LEARN number
+---@field X4 number
+---@field EDIT number
+---@field PAGE number
+---@field USER1 number
+---@field FIXTURE number
+---@field EXECUTOR3 number
+---@field FREEZE number
+---@field EXECUTOR1 number
+---@field U3 number
+---@field BLACKOUT number
+---@field X3 number
+---@field IF number
+---@field LIST number
+---@field TOP number
+---@field ON number
+---@field PREVIEW number
+---@field EXEC_FADER number
+---@field V6 number
+---@field SETUP number
+---@field CUE number
+---@field PAGE_FADER_DOWN number
+---@field FADER number
+---@field LBTN number
+---@field MOUSE number
+---@field MBTN number
+---@field ASSIGN number
+---@field RBTN number
+---@field DEF_GO_MINUS number
+---@field PAGE_FADER_UP number
+---@field X5 number
+---@field MOVE number
+---@field DOT number
+---@field CLEAR number
+---@field X11 number
+---@field NEXT number
+---@field MACRO number
+---@field ENTER number
+---@field GO_PLUS number
+---@field AT number
+---@field PLUS number
+---@field ALIGN number
+---@field PAUSE number
+---@field X8 number
+---@field DELETE number
+---@field MA number
+---@field FULL number
+---@field V9 number
+---@field V8 number
+---@field X6 number
+---@field V7 number
+---@field 4 number
+---@field X20 number
+---@field 6 number
+---@field 5 number
+---@field 0 number
+---@field UPDATE number
+---@field 2 number
+---@field 1 number
+---@field V5 number
+---@field V3 number
+---@field TEMP number
+---@field TOOLS number
+---@field CHANNEL number
+---@field 7 number
+---@field BACKUP number
+---@field 9 number
+---@field OOPS number
+---@field HELP number
+---@field X12 number
+---@field X1 number
+---@field COPY number
+---@field DOWN number
+---@field X16 number
+---@field FIX number
+---@field GOTO number
+---@field X7 number
+---@field EXEC number
+---@field BACKGROUND number
+---@field X15 number
+---@field VIEW number
+---@field V10 number
+---@field PREV number
+---@field X10 number
+---@field USER2 number
+---@field X14 number
+---@field ESC number
+---@field THRU number
+---@field U2 number
+---@field MINUS number
+---@field X18 number
+---@field SET number
+---@field EXECUTOR0 number
+---@field 8 number
+---@field EFFECT number
+---@field 3 number
+---@field SELECT number
+---@field None number
+---@field HIGH number
