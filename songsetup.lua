@@ -1,4 +1,4 @@
-require("gma_api")
+gma = gma
 
 local common = require("modules/commons")
 local uservars = common.uservars
@@ -24,7 +24,7 @@ local function create_song_view(song_name, song_pool_number, song_number)
 		song_pool_number - 1 + song_number * 62
 	)
 	local xmlpath = gma.show.getvar("path") .. "/importexport/"
-	local current_view = "view_" .. song_name
+	local current_view = "tmp_view_" .. song_name
 	local filename = xmlpath .. current_view .. ".xml"
 	local file, err = io.open(filename, "w")
 	if not file then
@@ -36,6 +36,8 @@ local function create_song_view(song_name, song_pool_number, song_number)
 	gma.cmd("selectdrive 1")
 	cmd('import "%s" at view %s /o /nc', { current_view, song_pool_number })
 	gma.cmd("delete screen " .. uservars.view_screen)
+	-- The following is a tentative let the console generate the thumbnail for the view
+	-- It's been working... sometimes.
 	local view_cmd = "view " .. song_pool_number .. " /screen=" .. uservars.view_screen
 	gma.cmd(view_cmd)
 	gma.sleep(0.1)
