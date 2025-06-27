@@ -24,12 +24,10 @@ local M = {
 	shapers = 0x50524508,
 	video = 0x50524509,
 }
-
-function M:get_type_number(preset_number)
+M.get_type_number = function(preset_number)
 	if type(preset_number) ~= "number" then
 		return nil
 	end
 	return string.format("%08x", M.all + preset_number)
 end
-
 return M

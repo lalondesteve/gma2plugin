@@ -4,12 +4,12 @@ return {
 		user_suffix = "_vx",
 		fixed_page_name = "FixedPage",
 		fixed_pool_item_number = 5001,
+		moving_pool_gap = 64,
 		show_exec_name = "ShowExec",
 		page_turn_name = "PageTurn",
 		page_turn_macro_number = "",
 		view_screen = "",
 		main_executor = "29",
-		objects_to_setup = { "Sequence", "Macro", "Page", "Timecode", "View" },
 	},
 
 	get_label = function(_id)
@@ -33,6 +33,5 @@ return {
 		local s = string.format(template, table.unpack(args))
 		gma.feedback("Sending cmd :", s)
 		gma.cmd(s)
-		return nil
 	end,
 }
