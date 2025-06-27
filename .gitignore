@@ -2,6 +2,7 @@
 # Compiled Lua sources
 luac.out
 
+*temp*
 # luarocks build files
 *.src.rock
 *.zip
